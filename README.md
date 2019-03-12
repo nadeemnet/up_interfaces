@@ -1,9 +1,9 @@
 ## Introduction
 We have a project to refresh our access switches. One of the data point we would like to have is how many switchports are there on each switch stack and more importantly how many of them are actually utilized.
 
-## Ansible Playbook
+## Ansible Playbook 
 
-This playbook collects interfaces details using napalm_get_facts module. A jinja2 template is used with custom filers to:
+This playbook 'napalm_get_interfaces.yaml' collects interfaces details using napalm_get_facts module. A jinja2 template is used with custom filers to:
 - Calculate total number of interfaces in the switches stack.
 - Calculate total number of interfaces with line protocol in UP state.
 - Template also prints interfaces with UP state. 
