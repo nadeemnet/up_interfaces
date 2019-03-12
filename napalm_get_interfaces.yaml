@@ -1,0 +1,29 @@
+---
+# This playbook collects interfaces details using napalm_get_facts module
+# A jinja2 templete is used with custom filers to:
+# 1) Calculate totoal number of interfaces in the switches stack
+# 2) Calculates total number of interface with line protocol in UP state
+# 3) Template also prints interfaces with UP state
+# At the end Ansible assemble module is used to gather all results into one file.
+
+- name: Prepraring result directory
+  import_playbook: create_results_dir.yaml
+
+- name: Get interfaces with NAPALM
+  hosts: Acc_Switches
+  tasks:
+  - napalm_get_facts:
+      hostname: "{{ansible_host}}"
+      username: "{{ansible_user}}"
+      password: "{{ansible_ssh_pass}}"
+      dev_os: ios
+      filter: 'interfaces'
+    register: result
+  - template: 
+      src: "{{playbook_dir}}/templates/up_interfaces.j2"
+      dest: "{{playbook_dir}}/results/{{inventory_hostname}}_data.txt"  
+  - assemble:
+      src:  "{{playbook_dir}}/results/"
+      dest:  "{{playbook_dir}}/results/assembled.txt"
+    delegate_to: localhost 
+    run_once: true         

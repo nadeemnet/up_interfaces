@@ -1,0 +1,12 @@
+{# This collects all UP interfaces #}
+----- {{ inventory_hostname}} -----
+INFO: Total Interfaces: {{ result.ansible_facts | count_eth }}
+INFO: UP Interfaces: {{ result.ansible_facts | count_up }}
+{% for interface in result.ansible_facts.napalm_interfaces %}
+{# we are only looking for Ethernet interfaces and not vlans and Port-Ch #}
+{% if 'Ethernet' in interface %}
+{% if result.ansible_facts.napalm_interfaces[interface].is_up %}
+{{ inventory_hostname }}  {{ interface }}
+{% endif %}
+{% endif %}
+{% endfor %}

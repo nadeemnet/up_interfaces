@@ -1,0 +1,6 @@
+---
+- name: Preparing results directory
+  hosts: localhost
+  tasks:
+  - file: path=./results state=absent
+  - file: path=./results state=directory
